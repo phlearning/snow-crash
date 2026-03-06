@@ -14,6 +14,7 @@ URL_DOWNLOAD="https://cdn.intra.42.fr/isos/SnowCrash.iso"
 ISO_PATH="${GOINFRE}/SnowCrash.iso" # path to the iso in the goinfre
 VM_NAME="$(hostname -s)-snowcrash-$(whoami)"
 OS_TYPE="Ubuntu_64" # use 'VBoxManage list ostypes' to list the available OS types, use the ID field of the wanted OS
+GRAPHICS_CONTROLLER="vmsvga" # Options: vboxvga, vboxsvga, vmsvga
 HOST_IP=""
 HOST_PORT="4242"
 GUEST_IP=""
@@ -46,6 +47,7 @@ create_vm() {
     VBoxManage storagectl "${VM_NAME}" --name "SATA Controller" --add sata --controller IntelAHCI
     VBoxManage storageattach "${VM_NAME}" --storagectl "SATA Controller" --port 0 --device 0 --type dvddrive --medium "${ISO_PATH}"
     VBoxManage modifyvm "${VM_NAME}" --audio-driver none
+    VBoxManage modifyvm "${VM_NAME}" --graphicscontroller "${GRAPHICS_CONTROLLER}"
     VBoxManage modifyvm "${VM_NAME}" --vram 32
 
     echo -e "${GREEN}VirtualBox VM '${VM_NAME}' successfully created${RESET}"
