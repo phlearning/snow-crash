@@ -14,7 +14,10 @@ URL_DOWNLOAD="https://cdn.intra.42.fr/isos/SnowCrash.iso"
 ISO_PATH="${GOINFRE}/SnowCrash.iso" # path to the iso in the goinfre
 VM_NAME="$(hostname -s)-snowcrash-$(whoami)"
 OS_TYPE="Ubuntu_64" # use 'VBoxManage list ostypes' to list the available OS types, use the ID field of the wanted OS
-PORT_FORWARDING_HOST="4242"
+HOST_IP=""
+HOST_PORT="4242"
+GUEST_IP=""
+GUEST_PORT="4242"
 
 download_iso() {
     echo "ISO file not found"
@@ -39,7 +42,7 @@ create_vm() {
     echo -e "${YELLOW}Creating VirtualBox VM '${VM_NAME}'...${RESET}"
     VBoxManage createvm --name "${VM_NAME}" --ostype "${OS_TYPE}" --register
     VBoxManage modifyvm "${VM_NAME}" --memory "${RAM_SIZE}" --cpus 4 --nic1 nat
-    VBoxManage modifyvm "${VM_NAME}" --nat-pf1 "Rule 1,tcp,127.0.0.1,${PORT_FORWARDING_HOST},10.0.2.15,80"
+    VBoxManage modifyvm "${VM_NAME}" --nat-pf1 "Rule 1,tcp,${HOST_IP},${HOST_PORT},${GUEST_IP},${GUEST_PORT}"
     VBoxManage storagectl "${VM_NAME}" --name "SATA Controller" --add sata --controller IntelAHCI
     VBoxManage storageattach "${VM_NAME}" --storagectl "SATA Controller" --port 0 --device 0 --type dvddrive --medium "${ISO_PATH}"
     VBoxManage modifyvm "${VM_NAME}" --audio-driver none
