@@ -52,17 +52,3 @@ Check flag.Here is your token : x24ti5gi3x0ol2eh4esiuxias
 ```
 
 
-
----
-
-### 🧠 Why did this work? (The Logic)
-
-In many early CTF levels, passwords aren't "encrypted" (which would require a key) but **obfuscated**.
-
-The **Caesar Cipher** (or ROT) works by shifting every letter in the alphabet by a fixed number. In your screenshot, CyberChef shows that shifting `c` forward by 11 places gives you `n`.
-
-* `c` + 11 = `n`
-* `d` + 11 = `o`
-* `i` + 11 = `t` ... and so on.
-
-
