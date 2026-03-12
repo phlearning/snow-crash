@@ -1,54 +1,51 @@
 # Snow Crash - Level 00
 
-## 🎯 Objective
+## 🎯 Objectif
 
-Escalate privileges from user `level00` to `flag00` to retrieve the first authentication token.
+Passer de l'utilisateur `level00` à `flag00` afin de récupérer le premier jeton (token) d'authentification.
 
-## 🔍 Discovery
+## 🔍 Découverte
 
-1. **Restricted Environment:** The home directory for `level00` had no visible files and restricted permissions for `ls`.
-2. **System Search:** A recursive search for files owned by the target user `flag00` was performed:
+1. **Environnement restreint :** Le répertoire personnel (`home`) de `level00` ne contenait aucun fichier visible et les permissions pour la commande `ls` étaient restreintes.
+2. **Recherche système :** Une recherche récursive de tous les fichiers appartenant à l'utilisateur cible `flag00` a été effectuée :
 ```bash
 find / -user flag00 2>/dev/null
 
 ```
 
 
-3. **Interesting Files:** The search revealed two identical files:
+3. **Fichiers suspects :** La recherche a révélé deux fichiers identiques :
 * `/usr/sbin/john`
 * `/rofs/usr/sbin/john`
 
 
-4. **Obfuscated Content:** Running `cat /usr/sbin/john` revealed the ciphertext:
+4. **Contenu obfusqué :** L'exécution de `cat /usr/sbin/john` a révélé le texte chiffré suivant :
 > `cdiiddwpgswtgt`
 
 
 
-## 🛠️ Decoding (CyberChef Method)
-
+## 🛠️ Décodage (Méthode CyberChef)
 ![solve](cyberchef-rot13.png)
-The string appeared to be a simple substitution cipher. To solve it:
+Le texte semblait être un simple algorithme de substitution (César). Pour le résoudre :
 
-* **Tool:** [CyberChef](https://gchq.github.io/CyberChef/)
-* **Recipe:** `ROT13 Brute Force`
-* **Input:** `cdiiddwpgswtgt`
-* **Finding:** At an amount (shift) of **11**, the output transformed into human-readable text: **`nottoohardhere`**.
+* **Outil :** [CyberChef](https://gchq.github.io/CyberChef/)
+* **Recette :** `ROT13 Brute Force`
+* **Input :** `cdiiddwpgswtgt`
+* **Résultat :** Avec un décalage (shift) de **11**, le texte devient lisible : **`nottoohardhere`**.
 
-## 🚩 Capture
+## 🚩 Capture du Flag
 
-1. **Switch User:** Use the decoded password to become the flag user.
+1. **Changement d'utilisateur :** Utilisation du mot de passe décodé pour devenir l'utilisateur `flag00`.
 ```bash
 su flag00
-# Enter password: nottoohardhere
+# Entrer le mot de passe : nottoohardhere
 
 ```
 
 
-2. **Get Flag:** Run the internal utility to get the token for the next level.
+2. **Récupération du Flag :** Exécution de l'utilitaire interne pour générer le token du niveau suivant.
 ```bash
 flag00@SnowCrash:~$ getflag
 Check flag.Here is your token : x24ti5gi3x0ol2eh4esiuxias
 
 ```
-
-
